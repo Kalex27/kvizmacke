@@ -1,8 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/angular/standalone';
 import { AbcServiceNas } from '../abc';
+import { QuizService } from '../quiz-service/quiz';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class HomePage {
   text = "abc";
-  mau:string;
+  mau:string = "mau";
   //some_var: Observable<{ name: string }>;
 
   onkliktanje():void{
@@ -21,20 +23,21 @@ export class HomePage {
     console.log
   }
 
-  constructor(public abcService: AbcServiceNas)
+  constructor(public quiz: QuizService)
   {
-    this.mau = this.abcService.text;
+    //this.mau = this.abcService.text;
     //this.some_var = this.abcService.postmau();
     //this.some_var.subscribe((res) => {console.log(res)});
   }
   
-  addO(sl:string): void {
-    this.abcService.addO(sl);
-    this.mau = this.abcService.text;
-    
+  async addO(sl:string) {
+    //this.abcService.addO(sl);
+    //this.mau = this.abcService.text;
+    //console.log(await this.quiz.getQuizHashes(4));
   }
 
   unsub(): void {
-    this.abcService.getmau().subscribe((a: any) => {console.log(a)});
+    //this.abcService.getmau().subscribe((a: any) => {console.log(a)});
+    //this.quiz.seedQuestions(4, 3)
   }
 }
