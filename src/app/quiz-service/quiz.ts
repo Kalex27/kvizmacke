@@ -31,6 +31,9 @@ import { environment } from 'src/environments/environment.prod';
       ...
     },
 
+    // OVO GORE BI BILO LEPO DA NASTAVI DA POSTOJI, REALNI NIJE BITNO GDE JE QUESTIONS, BITNO
+    // JE SAMO DA OVA STRUKTURA OSTANE, OVO DOLE KAKO GOD
+
     // ako bi radili sesije, moze login-om, a mogu i anonimne sesije
     // onda bi imali i deo koji je:
     user-sessions: 
@@ -54,9 +57,45 @@ import { environment } from 'src/environments/environment.prod';
 export class QuizService {
   
   readonly dbPath : string = "https://kvizmacke-default-rtdb.europe-west1.firebasedatabase.app/";
-  quiz = new Quiz();
-  constructor(public http: HttpClient) {}
+  private quiz = new Quiz();
 
+  constructor(public http: HttpClient) {}
+  submitQuestion(text: string, solution: string, wrongAnswers : string[]) : void {
+    wrongAnswers.push(solution);
+    let q = new Question(text, wrongAnswers);
+    q.post(this.http, wrongAnswers.length - 1);
+  }
+  async getStats() : Promise<{ total:number, correct:number, incorrect:number, skipped:number }> {
+    let qz = await this.getQuiz();
+    let obj = { total:qz.questions.length, correct:0, incorrect:0, skipped:0 }
+    for (const qst of qz.questions) {
+      if (qst.player_answer === undefined) {
+        obj.skipped += 1;
+      } else {
+        let s = await Question.getSolution(this.http, qst.hash);
+        if (s === qst.player_answer) {
+          obj.correct += 1;
+        } else {
+          obj.incorrect += 1;
+        }
+      }
+    }
+    return obj;
+  }
+  async nextQuestion() : Promise<boolean> {
+    let h = await this.quiz.nextQuestion(this.http);
+    return h !== undefined;
+  }
+  async initializeQuiz(qCount : number) {
+    await this.quiz.loadQuestions(this.http, qCount);
+    await this.quiz.nextQuestion(this.http);
+  }
+  async getQuiz() : Promise<{ questions: { hash:string, player_answer:string|undefined}[], current_question:number}> {
+    return await this.quiz.getQuiz(this.http);
+  }
+  async resetQuiz() {
+    this.quiz.clear(this.http);
+  }
   async submitAnswer(ans : string) {
     return this.quiz.setAnswer(this.http, ans);
   }
@@ -79,7 +118,6 @@ export class QuizService {
       return undefined;
     }
   }
-
   seedQuestions(count_riba : number, count_sabiranje : number) : void {
     // sve je riba
     let zivotinje = ["krava", "macka", "pas", "riba", "gazela", "koza", "kit", "pastrmka",
@@ -183,7 +221,6 @@ class Quiz {
 
   // ako bi se prebacili na rad gde se sve ovo cuva u sesiji, buvkalno samo zamenimo
   // implementacije ovih funkcija...nadam se, ako nista kontam da ce pomoci tako da se pristupi
-
   getQuiz(http: HttpClient) : { questions: { hash:string, player_answer:string|undefined}[], current_question:number} {
     return {questions: this.questions, current_question: this.currentQuestion};
   }
@@ -204,9 +241,9 @@ class Quiz {
   async loadQuestions(http: HttpClient, question_count: number) : Promise<void> {
     let hashes : string[] = await Question.getHashes(http);
     let picks = Randomizer.pickUpTo(question_count, hashes);
+    console.log(picks);
     this.questions = Randomizer.shuffle(picks.length)
-      .map((i) => {return {hash: hashes[picks[i]],
-                           player_answer: undefined}});
+      .map((i) => {return { hash: picks[i], player_answer: undefined}});
   }
   // boolean je za da li je tacno. Undefined je za "ne postoji u opcijama u bazi"
   async setAnswer(http: HttpClient, ans : string) : Promise<boolean | undefined> {
@@ -246,7 +283,7 @@ class Randomizer {
     }
     // isto je da li pise keys ili values za skupove ...
     for (const q of picks.keys()) {
-      res.push(q);
+      res.push(arr[q]);
     }
 
     return res;

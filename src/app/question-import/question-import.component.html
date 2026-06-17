@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <h1>Novo Pitanje</h1>
+    <hr />
+    <hr />
+    <ion-list>
+      <ion-item>
+        <ion-input label="Pitanje" [(ngModel)]="questionText"/>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Tacan odgovor" [(ngModel)]="solution"/>
+      </ion-item>
+      @for (ans of wrongAnswers; track $index; let idx = $index) {
+        <ion-item>
+          <ion-input label="Netacan odgovor" [(ngModel)]="wrongAnswers[idx]"/>
+        </ion-item>
+      }
+    </ion-list>
+    <p><ion-button (click)="newWrong()">+</ion-button><ion-button (click)="removeWrong()">-</ion-button></p>
+    <p><ion-button (click)="acceptQuestion()">Potvrdi</ion-button><ion-button (click)="goBack()">Nazad</ion-button></p>
+  </div>
+</ion-content>

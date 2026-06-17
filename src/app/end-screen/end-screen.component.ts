@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/angular/standalone';
+import { QuizService } from '../quiz-service/quiz';
 
 @Component({
   selector: 'app-end-screen',
@@ -9,8 +10,25 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/a
 })
 export class EndScreenComponent  implements OnInit {
 
-  constructor() { }
+  changeState = output<string>();
 
-  ngOnInit() {}
+  totalQuestions : number = 0;
+  correctCount : number = 0;
+  incorrectCount : number = 0;
+  skippedCount : number = 0;
 
+  constructor(public quizService : QuizService) { }
+
+  async ngOnInit() {
+    let stats = await this.quizService.getStats();
+    this.correctCount = stats.correct;
+    this.incorrectCount = stats.incorrect;
+    this.skippedCount = stats.skipped;
+    this.totalQuestions = stats.total;
+  }
+
+  async goBackClick() {
+    await this.quizService.resetQuiz();
+    this.changeState.emit("quiz_start");
+  }
 }

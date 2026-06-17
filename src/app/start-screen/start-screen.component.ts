@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton} from '@ionic/angular/standalone';
+import { QuizService } from '../quiz-service/quiz';
 
 @Component({
   selector: 'app-start-screen',
@@ -7,10 +8,18 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton} from '@ionic/an
   styleUrls: ['./start-screen.component.scss'],
   imports: [IonContent, IonButton] 
 })
-export class StartScreenComponent  implements OnInit {
+export class StartScreenComponent {
 
-  constructor() { }
+  changeState = output<string>();
 
-  ngOnInit() {}
+  constructor(public quizService : QuizService) { }
 
+  async quizStartClick(qCount : number) {
+    await this.quizService.initializeQuiz(qCount);
+    this.changeState.emit("quiz_question");
+  }
+
+  importQClick() {
+    this.changeState.emit("import_question");
+  }
 }

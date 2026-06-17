@@ -1,7 +1,12 @@
 <ion-content [fullscreen]="true">
   <div id="container">
-    <strong>Kviz je gotov.</strong>
-    <p> Ovde bi sad bilo dobro da se izlistaju pitanja iz kviza i sta je bilo tacno i slicno. </p>
-    <p><ion-button>Nazad na pocetak</ion-button></p>
+    <h1><strong> Kraj </strong></h1>
+    <hr />
+    <p>Pitanja : <strong>{{totalQuestions}}</strong></p>
+    <p>Tacnih odgovora : <strong class="correctText">{{correctCount}}</strong></p>
+    <p>Pogresnih odgovora : <strong class="incorrectText">{{incorrectCount}}</strong></p>
+    <p>Preskocenih odgovora : <strong class="skippedText">{{skippedCount}}</strong></p>
+    <hr />
+    <p><ion-button (click)="goBackClick()">Nazad na pocetak</ion-button></p>
   </div>
 </ion-content>

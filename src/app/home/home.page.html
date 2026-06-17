@@ -1,1 +1,14 @@
-<app-question></app-question>
+@switch (activeComponent) {
+    @case ("quiz_question") {
+        <app-question (changeState)="updateComponent($event)" />
+    }
+    @case ("quiz_start") {
+        <app-start-screen (changeState)="updateComponent($event)"/>
+    }
+    @case ("quiz_end") {
+        <app-end-screen (changeState)="updateComponent($event)"/>
+    }
+    @case ("import_question") {
+        <app-question-import (changeState)="updateComponent($event)"/>
+    }
+}

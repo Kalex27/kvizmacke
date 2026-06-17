@@ -1,8 +1,18 @@
 <ion-content [fullscreen]="true">
   <div id="container">
-    <h1><strong>{{questionText}}</strong></h1>
+    <div>
+      <p>Pitanje {{qNo}}/{{qCountTotal}}</p>
+      <h1>
+        <strong>{{questionText}}</strong>
+      </h1>
+    </div>
+    <hr />
     <p>{{responseText}}</p>
-    <p><ion-button>Odustani</ion-button><ion-button>></ion-button></p>
+    <hr />
+    <p>
+      <ion-button (click)="giveUpClick()">Odustani</ion-button>
+      <ion-button (click)="nextClick()">></ion-button>
+    </p>
     @for (ans of answers; track ans) {
       <p><ion-button [attr.color] = "correctness[ans] !== undefined ? ( correctness[ans] ? 'success' : 'danger') : 'primary'" (click)="submitAnswer(ans)">{{ans}}</ion-button></p>
     }
