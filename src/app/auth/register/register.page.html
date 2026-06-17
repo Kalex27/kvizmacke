@@ -1,0 +1,97 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-title>Registracija</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()"> <!--Povezuje html i ts forme-->
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-item>
+            <ion-input type="text" formControlName="name" label="Ime" labelPlacement="floating"
+          ></ion-input>
+          </ion-item>
+        </ion-col>
+
+        @if(registerForm.get('name')!.invalid && registerForm.get('name')!.touched) {
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <p>Ime je obavezno polje!</p>
+          </ion-col>
+        </ion-row>
+        }
+
+        <ion-col size-sm="3">
+          <ion-item>
+            <ion-input type="text" formControlName="username" label="Korisnicko ime" labelPlacement="floating"
+          ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      @if(registerForm.get('username')!.invalid && registerForm.get('username')!.touched) {
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <p>Korisnicko ime je obavezno polje!</p>
+          </ion-col>
+        </ion-row>
+      }
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-input type="email" formControlName="email" label="Email" labelPlacement="floating"
+            > </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      @if(registerForm.get('email')!.invalid && registerForm.get('email')!.touched) {
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <p>Uneta email adresa nije ispravna!</p>
+          </ion-col>
+        </ion-row>
+      }
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-input type="password" formControlName="password" label="Lozinka" labelPlacement="floating"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      @if(registerForm.get('password')!.invalid && registerForm.get('password')!.touched) {
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <p>Lozinka mora da ima minimum 4 karaktera!</p>
+          </ion-col>
+        </ion-row>
+      }
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-button type="submit" color="primary" shape="round" expand="block" 
+                      [disabled]="registerForm.invalid"
+          >Register</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <ion-row class="ion-justify-content-center">
+  <ion-col size-sm="6" offset-sm="3" style="text-align: center; margin-top: 12px;">
+    
+    <p>
+      Vec imate nalog? Idi na stranicu za prijavu:
+      <a routerLink="/log-in">Log in</a>
+    </p>
+
+  </ion-col>
+</ion-row>
+</ion-content>

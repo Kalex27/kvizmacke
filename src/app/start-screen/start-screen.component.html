@@ -1,4 +1,12 @@
 <ion-content [fullscreen]="true">
+  
+  <ion-fab horizontal="end" slot="fixed">
+    <ion-fab-button size="small" color="secondary" (click)="openModal()">
+      <ion-icon name="paw"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
   <div id="container">
     <strong>Macke kviz</strong>
     <p>Mjau.</p>
@@ -7,5 +15,14 @@
     <p><ion-button (click)="quizStartClick(10)">Pocni kviz : 10 pitanja</ion-button></p>
     <p><ion-button (click)="quizStartClick(20)">Pocni kviz : 20 pitanja</ion-button></p>
     <p><ion-button (click)="importQClick()">Pisi pitanja</ion-button></p>
+  </div>
+
+
+  <div class="login_footer">
+    <img class="cat-ears" src="assets/ears.png"/>
+    <p>
+      Ulogujte se
+      <a routerLink="/log-in">Log in</a>
+    </p>
   </div>
 </ion-content>

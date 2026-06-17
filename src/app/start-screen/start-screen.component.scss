@@ -6,6 +6,8 @@
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+
+  padding-bottom: 70px;
 }
 
 #container strong {
@@ -24,4 +26,41 @@
 
 #container a {
   text-decoration: none;
+}
+
+ion-fab-button::part(native):hover {
+  background: #e26822;
+}
+
+.login_footer {
+  position: absolute;
+  
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  background-color: rgb(36, 36, 36);
+  color: #e4e4e4;
+
+  text-align: center;
+  //padding: 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.cat-ears {
+  position: absolute;
+
+  top: -20px; //podigne gore usice
+  left: 20%;
+  transform: translateX(-50%);
+
+
+  width: 55px; //velicina
+  height: auto;
+}
+
+ion-content {
+  position: relative;
+  --padding-bottom: 0;
+
 }
