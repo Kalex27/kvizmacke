@@ -1,3 +1,4 @@
+
 <ion-content [fullscreen]="true">
   
   <ion-fab horizontal="end" slot="fixed">
@@ -14,15 +15,36 @@
     <p><ion-button (click)="quizStartClick(5)" >Pocni kviz : 5 pitanja</ion-button></p>
     <p><ion-button (click)="quizStartClick(10)">Pocni kviz : 10 pitanja</ion-button></p>
     <p><ion-button (click)="quizStartClick(20)">Pocni kviz : 20 pitanja</ion-button></p>
-    <p><ion-button (click)="importQClick()">Pisi pitanja</ion-button></p>
+
+    <ng-container *ngIf="currentUser | async as user"> <!--Ovo vide samo ulogovani korisnici-->
+      <p>
+        <ion-button (click)="importQClick()">Pisi pitanja</ion-button>
+      </p>
+      <p>
+        <a (click)="logout()" style="cursor: pointer;">
+          Logout
+        </a>
+      </p>
+    </ng-container>
+    <!--<p><ion-button (click)="importQClick()">Pisi pitanja</ion-button></p>-->
   </div>
 
 
   <div class="login_footer">
-    <img class="cat-ears" src="assets/ears.png"/>
-    <p>
-      Ulogujte se
-      <a routerLink="/log-in">Log in</a>
-    </p>
+    <img class="cat-ears" src="assets/ears.png"/> <!--slika usiju mjau-->
+
+
+    <ng-container *ngIf="currentUser | async as user; else guest">
+      <p>
+        {{ user.name }} ({{ user.username }}) {{ user.email }}
+      </p>
+    </ng-container>
+
+    <ng-template #guest>
+      <p>
+        Ulogujte se
+        <a routerLink="/log-in">Log in</a>
+      </p>
+    </ng-template>
   </div>
 </ion-content>

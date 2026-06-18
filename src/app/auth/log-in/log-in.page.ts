@@ -18,7 +18,7 @@ import {
   IonTitle,
   IonToolbar,
   LoadingController,
-  AlertController,
+  ToastController, 
 } from '@ionic/angular/standalone';
 import { Route, Router } from '@angular/router';
 import { AuthService } from '../auth';
@@ -51,17 +51,72 @@ export class LogInPage implements OnInit {
   router: Router = inject(Router);
   authService: AuthService = inject(AuthService);
   loadingCtrl: LoadingController = inject(LoadingController);
-  alertCtrl: AlertController = inject(AlertController);
+
+  toastCtrl = inject(ToastController);
 
   constructor() {}
 
   ngOnInit() {}
 
+  async showToast(message: string, color: string = 'danger') {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      color,
+    });
+
+    await toast.present();
+  }
+
   async onLogIn(logInForm: NgForm) {
     console.log(logInForm);
+
+    const loadingEl = await this.loadingCtrl.create({ //you spin me right round baby right round
+      message: 'Prijava u toku...',
+      spinner: 'lines',
+    });
+
+    await loadingEl.present();
+
     if(logInForm.valid){
-      this.authService.logIn();
-      this.router.navigateByUrl('/home');
+      this.authService.logIn(logInForm.value).subscribe({
+        
+        next:(resData) =>{
+          console.log("Uspesna prijava")
+
+          const uid = resData.localId; //uzima id uspesno prijavljenog korisnika
+          
+          this.authService.getUserData(uid).subscribe(userData => {
+
+            const currentUser = {
+              id: uid,
+              email: resData.email,
+              name: userData.name,
+              username: userData.username,
+            };
+
+            this.authService.setCurrentUser(currentUser);
+
+            loadingEl.dismiss(); //zatvara spiner
+            this.router.navigateByUrl('/home');
+          });
+
+          //console.log(resData)
+          //loadingEl.dismiss(); //zatvara spiner
+          //this.router.navigateByUrl('/home');
+        },
+
+        error: async (err) => {
+          let message = 'Neispravni email ili password';
+          console.error(err);
+          loadingEl.dismiss();
+
+          await this.showToast(message);
+
+          logInForm.reset();
+        },
+      });
+      
     }
   }
 }
