@@ -4,6 +4,7 @@ import { StartScreenComponent } from '../start-screen/start-screen.component';
 import { QuestionComponent } from '../question/question.component';
 import { EndScreenComponent } from '../end-screen/end-screen.component';
 import { QuestionImportComponent } from '../question-import/question-import.component';
+import { LekiGaleryComponent } from '../leki-galery/leki-galery.component';
 
 
 
@@ -11,7 +12,7 @@ import { QuestionImportComponent } from '../question-import/question-import.comp
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [StartScreenComponent, QuestionComponent, EndScreenComponent, QuestionImportComponent],
+  imports: [StartScreenComponent, QuestionComponent, EndScreenComponent, QuestionImportComponent, LekiGaleryComponent],
 })
 export class HomePage {
 
@@ -28,6 +29,9 @@ export class HomePage {
   {}
 
   updateComponent(comp : string) : void {
+    console.log('Promena na:', comp); //provera zasto mi ne prebacuje na galeriju
     this.activeComponent = comp;
   }
+
+  
 }

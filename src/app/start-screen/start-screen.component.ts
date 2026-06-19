@@ -40,12 +40,14 @@ export class StartScreenComponent {
     this.changeState.emit("import_question");
   }
 
-  async openModal(){
-    
-  }
-
+  
   logout() {
     this.authService.logOut();
   }
+  
+  async openModal(){
+    this.changeState.emit("leki-galery");
+  }
+  
 
 }
