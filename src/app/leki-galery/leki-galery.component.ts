@@ -20,4 +20,13 @@ export class LekiGaleryComponent  implements OnInit {
     this.changeState.emit('quiz_start');
   }
 
+  downloadImage(imagePath: string, fileName: string) {
+    const link = document.createElement('a');
+    link.href = imagePath;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 }

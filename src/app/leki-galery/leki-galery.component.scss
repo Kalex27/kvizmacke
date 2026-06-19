@@ -1,7 +1,7 @@
 #container {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+  //min-height: 100%;
+  //display: flex;
+  //flex-direction: column;
   padding: 20px;
 }
 
@@ -16,8 +16,6 @@
 }
 
 .gallery {
-  flex: 1;
-
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -44,6 +42,6 @@
 }
 
 ion-button {
-  margin-top: auto;
-  margin-bottom: 20px;
+  display: block;
+  margin: 20px auto;
 }
