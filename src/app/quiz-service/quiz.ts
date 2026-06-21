@@ -3,53 +3,6 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 
-/*
-  Baza je struktuirana na sledeci nacin (sto se tice pitanja)
-  root je objekat:
-  {
-    questions:
-    {
-      q-hash: { question: 
-                {
-                  text: string,
-                  answers: 
-                  { [keys : string] : string // value je answerText }
-                  
-                  // keys je random hash koji cemo da vecinom da ignorisemo,
-                  // ono sto je bitno je da ako odlucimo da budu uzastopni integeri,
-                  // onda moraju tako svuda da budu, inace moze bilo kako
-                  //
-                  // ovo je zato sto firebase ne moze nativno da cuva arrayeve
-                  // tako da ono sto rade je ako imamo uzastopne brojeve u kljucevima
-                  // vracace array sa tim brojevima u indeksima, imao sam cudne momente
-                  // gde uspe da vrati array i kad nisu uzastopni, tako da tu ide random
-                  // hash, ili kao a0, a1, a2 itd. samo da ne budu cisti brojevi.
-                  
-                },
-                solution: string (text tacnog odgovora)
-              },
-      ...
-    },
-
-    // OVO GORE BI BILO LEPO DA NASTAVI DA POSTOJI, REALNI NIJE BITNO GDE JE QUESTIONS, BITNO
-    // JE SAMO DA OVA STRUKTURA OSTANE, OVO DOLE KAKO GOD
-
-    // ako bi radili sesije, moze login-om, a mogu i anonimne sesije
-    // onda bi imali i deo koji je:
-    user-sessions: 
-    {
-      // kreira se kad pocne kviz, obrise se kad se zavrsi kviz
-      hash-sta-god-da-auth-radi: 
-      {
-        questions : { [key : string] : string }
-        // key je hash pitanja, value je tekst odgovora na pitanje
-        current_question : int
-        // da li nam treba transakcija ako ovo treba da se azurira? Jer treba
-        // da ucitamo i pitanje i da promenimo ovo o istom trosku
-      }
-    }
-  }
-*/
 
 @Injectable({
   providedIn: 'root',
@@ -219,8 +172,7 @@ class Quiz {
 
   constructor() {}
 
-  // ako bi se prebacili na rad gde se sve ovo cuva u sesiji, buvkalno samo zamenimo
-  // implementacije ovih funkcija...nadam se, ako nista kontam da ce pomoci tako da se pristupi
+  
   getQuiz(http: HttpClient) : { questions: { hash:string, player_answer:string|undefined}[], current_question:number} {
     return {questions: this.questions, current_question: this.currentQuestion};
   }
@@ -302,8 +254,8 @@ class Randomizer {
       for (let i=0; i<rndSetIndex; ++i) {
           nextIndex = keys.next().value ?? 0;
       }
-      // undefined slucaj se ne moze desiti, ali mi trazi da ga navedem.
-      // radi na praznom nizu odogovora i na jednoclanom nizu odgovora.
+      // undefined slucaj se ne moze desiti, ali mi trazi da ga navedem
+      // radi na praznom nizu odogovora i na jednoclanom nizu odgovora
       // ako bude ispisivalo puno puta prvo pitanje, to je zato sto se ovde
       // nesto zbrljalo :(
 
