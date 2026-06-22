@@ -37,6 +37,6 @@ export class QuestionImportComponent  implements OnInit {
     this.wrongAnswers = [];
   }
   goBack() {
-    this.changeState.emit("quiz_start");
+    this.changeState.emit("question_list");
   }
 }

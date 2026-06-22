@@ -37,7 +37,7 @@ export class StartScreenComponent {
   }
 
   importQClick() {
-    this.changeState.emit("import_question");
+    this.changeState.emit("question_list");
   }
 
   

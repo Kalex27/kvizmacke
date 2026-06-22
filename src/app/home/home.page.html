@@ -3,7 +3,10 @@
         <app-question (changeState)="updateComponent($event)" />
     }
     @case ("quiz_start") {
+        
         <app-start-screen (changeState)="updateComponent($event)"/>
+        <!--<app-question-list></app-question-list>-->
+
     }
     @case ("quiz_end") {
         <app-end-screen (changeState)="updateComponent($event)"/>
@@ -13,5 +16,11 @@
     }
     @case ("leki-galery") {
         <app-leki-galery (changeState)="updateComponent($event)"/>
+    }
+    @case ("question_list") {
+        <app-question-list (changeState)="updateComponent($event)" (reviewQuestion)="reviewQuestion($event)"/>
+    }
+    @case ("review_question") {
+        <app-question-review [qHash]="reviewHash" (changeState)="updateComponent($event)"/>
     }
 }

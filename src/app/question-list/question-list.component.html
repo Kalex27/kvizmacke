@@ -1,0 +1,16 @@
+<ion-content [fullscreen]="true">
+  <div id="container">
+   <h1>
+    PITANJA
+   </h1>
+   <p>
+   <ion-button (click)="giveUp()">Nazad</ion-button>
+   <ion-button (click)="importQuestion()">+</ion-button>
+   </p>
+   @for(hash of questionList; track hash){
+    <p><ion-button (click)="questionClick(hash)">{{hash}}</ion-button></p>
+   }
+  </div>
+</ion-content>
+
+

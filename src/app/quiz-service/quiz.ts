@@ -18,6 +18,24 @@ export class QuizService {
     let q = new Question(text, wrongAnswers);
     q.post(this.http, wrongAnswers.length - 1);
   }
+
+  async listqHashes(){
+    return await Question.getHashes(this.http);
+  }
+
+  async getFullQ(qHash: string){
+    return await Question.getFullQuestion(this.http, qHash);
+  }
+
+  async deleteQ(qHash: string){
+    return await Question.deleteQuestion(this.http, qHash);
+  }
+
+  async updateQuestion(qHash: string, text: string, solution: string, wrongAnswers : string[]) {
+    wrongAnswers.push(solution);
+    let q = new Question(text, wrongAnswers);
+    return await Question.updateQuestion(this.http, qHash, q, q.answers.length -1);
+  }
   async getStats() : Promise<{ total:number, correct:number, incorrect:number, skipped:number }> {
     let qz = await this.getQuiz();
     let obj = { total:qz.questions.length, correct:0, incorrect:0, skipped:0 }
@@ -106,6 +124,24 @@ class Question {
         this.answers.push(answers[a]);
       }
     }
+  }
+
+  static async updateQuestion(http : HttpClient, qHash : string, newValue: Question, newCorrect: number) {
+    let q : { [ keys : string ] : any} = {}
+    q['question'] = newValue.toJsonObject();
+    q['solution'] = newValue.answers[newCorrect];
+    
+    return await firstValueFrom(http.put(`${environment.dbPath}/questions/${qHash}.json`, 
+      q
+    ))
+    
+  }
+
+
+  static async deleteQuestion(http : HttpClient, qHash : string) {
+    
+    return await firstValueFrom(http.delete(`${environment.dbPath}/questions/${qHash}.json`))
+    
   }
 
   static async getHashes(http : HttpClient) : Promise<string[]> {
